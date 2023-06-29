@@ -33,7 +33,7 @@ public class HealthBar : MonoBehaviour
         StartCoroutine(UpdateBar());
     }
 
-    IEnumerator UpdateBar()
+    private IEnumerator UpdateBar()
     {
         float elapsedTime = 0;
         Vector3 newScale = new Vector3((float)currentHealth / maxHealth, 1, 1);
@@ -48,6 +48,6 @@ public class HealthBar : MonoBehaviour
         }
 
         barTransform.localScale = newScale;
-        yield return null;
+        //yield return null;
     }
 }
