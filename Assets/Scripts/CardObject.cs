@@ -58,14 +58,22 @@ public class CardObject : MonoBehaviour
         Collider2D target = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset, targetLayer);
         Character targetCharacter;
         
-        if (!inHand && target && target.TryGetComponent<Character>(out targetCharacter) && targetCharacter.relation == targetRelationRequirement)
+        if (!inHand && target && target.TryGetComponent<Character>(out targetCharacter))
         {
-            PlayCard?.Invoke(target.GetComponent<Character>());
-            Destroy(gameObject);
+            if(targetCharacter.relation == targetRelationRequirement)
+            {
+                PlayCard?.Invoke(target.GetComponent<Character>());
+                Destroy(gameObject);
+            }
+            else
+            {
+                ErrorHandler.ThrowError("Invalid target.");
+                ReturnCardToHand();
+            }
         }
         else
         {
-            transform.position = cardHandPos;
+            ReturnCardToHand();
         }
     }
 
@@ -79,5 +87,10 @@ public class CardObject : MonoBehaviour
     {
         transform.position -= new Vector3(0, 0.5f, 0);
         transform.localScale -= new Vector3(0.2f, 0.3f, 0);
+    }
+
+    private void ReturnCardToHand()
+    {
+        transform.position = cardHandPos;
     }
 }
