@@ -39,8 +39,8 @@ public static class GUIHandler
         _gui.HideTargetingGUI();
     }
 
-    public static void CancleTargetAquisition()
+    public static void CancelTargetAquisition()
     {
-        _targetAquisition?.Cancle();
+        _targetAquisition?.Cancel();
     }
 }

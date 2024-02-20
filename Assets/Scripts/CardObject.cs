@@ -39,7 +39,6 @@ public class CardObject : MonoBehaviour
     {
         if (!isPlayed)
         {
-            cardHandPos = transform.position;
             offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
         }
     }
@@ -95,7 +94,7 @@ public class CardObject : MonoBehaviour
         transform.position = cardHandPos;
     }
 
-    private void CanclePlay()
+    private void CancelPlay()
     {
         isPlayed = false;
         ReturnCardToHand();
@@ -129,7 +128,7 @@ public class CardObject : MonoBehaviour
         }
         else
         {
-            CanclePlay();
+            CancelPlay();
         }
     }
 }

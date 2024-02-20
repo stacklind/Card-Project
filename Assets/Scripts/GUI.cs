@@ -13,7 +13,7 @@ public class GUI : MonoBehaviour
 
     public void HideTargetingGUI()
     {
-        GUIHandler.CancleTargetAquisition();
+        GUIHandler.CancelTargetAquisition();
         targetingGUI.SetActive(false);
     }
 }

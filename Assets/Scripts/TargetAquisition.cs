@@ -39,7 +39,7 @@ public class TargetAquisition
         return targets;
     }
 
-    public void Cancle()
+    public void Cancel()
     {
         targets = new Character[0];
         TargetsRemaining = 0;
