@@ -10,7 +10,6 @@ public class CardObject : MonoBehaviour
     private readonly float HAND_CUTOFF_POINT_Y = -2;
     private Vector3 offset;
     private bool inHand;
-    private bool isPlayed;
     private Vector3 cardHandPos;
     private int numberOfTargets;
 
@@ -19,6 +18,8 @@ public class CardObject : MonoBehaviour
     private delegate void playCardFunction(Character[] targets);
     private playCardFunction PlayCard;
     private Relation targetRelationRequirement;
+
+    private HandHandler hand;
 
     public void Init(ICard card)
     {
@@ -31,13 +32,14 @@ public class CardObject : MonoBehaviour
         targetLayer = LayerMask.GetMask("Target");
         cardText.text = card.CardText;
         inHand = true;
-        isPlayed = false;
         cardHandPos = transform.position;
+
+        hand = GetComponentInParent<HandHandler>();
     }
 
     private void OnMouseDown()
     {
-        if (!isPlayed)
+        if (!hand.cardIsBeingPlayed)
         {
             offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
         }
@@ -45,7 +47,7 @@ public class CardObject : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        if (!isPlayed)
+        if (!hand.cardIsBeingPlayed)
         {
             Vector3 currentScreenPoint = Input.mousePosition;
             Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + offset;
@@ -64,29 +66,38 @@ public class CardObject : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!inHand)
+        if (!hand.cardIsBeingPlayed)
         {
-            transform.position = GUIHandler.PlayedCardAnchor.position;
-            isPlayed = true;
+            if (!inHand)
+            {
+                transform.position = GUIHandler.PlayedCardAnchor.position;
+                hand.cardIsBeingPlayed = true;
 
-            StartCoroutine(RecieveTargetsAndPlay());
-        }
-        else
-        {
-            ReturnCardToHand();
+                StartCoroutine(RecieveTargetsAndPlay());
+            }
+            else
+            {
+                ReturnCardToHand();
+            }
         }
     }
 
     private void OnMouseEnter()
     {
-        transform.position += new Vector3(0, 0.5f, 0);
-        transform.localScale += new Vector3(0.2f, 0.3f, 0);
+        if (inHand)
+        {
+            transform.position += new Vector3(0, 0.5f, 0);
+            transform.localScale += new Vector3(0.2f, 0.3f, 0);
+        }
     }
 
     private void OnMouseExit()
     {
-        transform.position -= new Vector3(0, 0.5f, 0);
-        transform.localScale -= new Vector3(0.2f, 0.3f, 0);
+        if (inHand)
+        {
+            transform.position -= new Vector3(0, 0.5f, 0);
+            transform.localScale -= new Vector3(0.2f, 0.3f, 0);
+        }
     }
 
     private void ReturnCardToHand()
@@ -96,7 +107,7 @@ public class CardObject : MonoBehaviour
 
     private void CancelPlay()
     {
-        isPlayed = false;
+        hand.cardIsBeingPlayed = false;
         ReturnCardToHand();
     }
 
@@ -124,6 +135,7 @@ public class CardObject : MonoBehaviour
         if (targetCharacters.Length > 0)
         {
             PlayCard?.Invoke(targetCharacters);
+            hand.cardIsBeingPlayed = false;
             Destroy(gameObject);
         }
         else
