@@ -7,6 +7,8 @@ public class TargetAquisition
     private Character[] targets;
     private int _targetsRemaining;
     private Relation _relationRequirement;
+    public delegate void TargetingTextUpdate(int value);
+    public TargetingTextUpdate targetingTextUpdate;
 
     public int TargetsRemaining 
     {
@@ -17,6 +19,10 @@ public class TargetAquisition
             if(_targetsRemaining == 0)
             {
                 GUIHandler.AquisitionComplete();
+            }
+            else
+            {
+                targetingTextUpdate(_targetsRemaining);
             }
         }
     }
