@@ -8,5 +8,5 @@ public interface ICard
     public string CardText { get; set; }
     public Relation TargetRelation { get; set; }
 
-    public abstract void Play(Character target);
+    public abstract void Play(Character[] targets);
 }

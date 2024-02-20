@@ -17,6 +17,21 @@ public class Character : MonoBehaviour
     {
         
     }
+
+    private void OnMouseDown()
+    {
+        if (GUIHandler.AquiringTargets)
+        {
+            if(GUIHandler.TargetAquisition.RelationRequirement == relation)
+            {
+                GUIHandler.TargetAquisition.AddTarget(this);
+            }
+            else
+            {
+                ErrorHandler.ThrowError("Invalid target");
+            }
+        }
+    }
 }
 
 public enum Relation

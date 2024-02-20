@@ -10,11 +10,13 @@ public class CardObject : MonoBehaviour
     private readonly float HAND_CUTOFF_POINT_Y = -2;
     private Vector3 offset;
     private bool inHand;
+    private bool isPlayed;
     private Vector3 cardHandPos;
+    private int numberOfTargets;
 
     private int manaCost;
     private TMP_Text cardText;
-    private delegate void playCardFunction(Character target);
+    private delegate void playCardFunction(Character[] targets);
     private playCardFunction PlayCard;
     private Relation targetRelationRequirement;
 
@@ -24,52 +26,51 @@ public class CardObject : MonoBehaviour
         cardText = transform.Find("CardText").GetComponent<TextMeshPro>();
         manaCost = card.ManaCost;
         targetRelationRequirement = card.TargetRelation;
+        numberOfTargets = card is IArea ? 0 : (card as ITargetable).TargetCount;
 
         targetLayer = LayerMask.GetMask("Target");
         cardText.text = card.CardText;
         inHand = true;
+        isPlayed = false;
         cardHandPos = transform.position;
     }
 
     private void OnMouseDown()
     {
-        cardHandPos = transform.position;
-        offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+        if (!isPlayed)
+        {
+            cardHandPos = transform.position;
+            offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+        }
     }
 
     private void OnMouseDrag()
     {
-        Vector3 currentScreenPoint = Input.mousePosition;
-        Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + offset;
-        transform.position = currentPosition;
+        if (!isPlayed)
+        {
+            Vector3 currentScreenPoint = Input.mousePosition;
+            Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + offset;
+            transform.position = currentPosition;
 
-        if(transform.position.y > HAND_CUTOFF_POINT_Y && inHand)
-        {
-            inHand = false;
-        }
-        else if(transform.position.y <= HAND_CUTOFF_POINT_Y && !inHand)
-        {
-            inHand = true;
+            if (transform.position.y > HAND_CUTOFF_POINT_Y && inHand)
+            {
+                inHand = false;
+            }
+            else if (transform.position.y <= HAND_CUTOFF_POINT_Y && !inHand)
+            {
+                inHand = true;
+            }
         }
     }
 
     private void OnMouseUp()
     {
-        Collider2D target = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset, targetLayer);
-        Character targetCharacter;
-        
-        if (!inHand && target && target.TryGetComponent<Character>(out targetCharacter))
+        if (!inHand)
         {
-            if(targetCharacter.relation == targetRelationRequirement)
-            {
-                PlayCard?.Invoke(target.GetComponent<Character>());
-                Destroy(gameObject);
-            }
-            else
-            {
-                ErrorHandler.ThrowError("Invalid target.");
-                ReturnCardToHand();
-            }
+            transform.position = GUIHandler.PlayedCardAnchor.position;
+            isPlayed = true;
+
+            StartCoroutine(RecieveTargetsAndPlay());
         }
         else
         {
@@ -92,5 +93,43 @@ public class CardObject : MonoBehaviour
     private void ReturnCardToHand()
     {
         transform.position = cardHandPos;
+    }
+
+    private void CanclePlay()
+    {
+        isPlayed = false;
+        ReturnCardToHand();
+    }
+
+    private IEnumerator RecieveTargetsAndPlay()
+    {
+        Character[] targetCharacters;
+
+        if (numberOfTargets == 0)
+        {
+            targetCharacters = BoardHandler.GetAllCharactersWithRelation(targetRelationRequirement);
+        }
+        else
+        {
+            TargetAquisition targetAquisition = new TargetAquisition(numberOfTargets, targetRelationRequirement);
+            GUIHandler.AquireTargets(targetAquisition);
+
+            while (targetAquisition.TargetsRemaining > 0)
+            {
+                yield return null;
+            }
+
+            targetCharacters = targetAquisition.GetTargets();
+        }
+
+        if (targetCharacters.Length > 0)
+        {
+            PlayCard?.Invoke(targetCharacters);
+            Destroy(gameObject);
+        }
+        else
+        {
+            CanclePlay();
+        }
     }
 }
