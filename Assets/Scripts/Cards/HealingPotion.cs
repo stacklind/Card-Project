@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealingPotion : ICard, ITargetable
 {
     private int _healingAmount = 10;
-    private string _cardText = "´Heal 10 HP";
+    private string _cardText = "Heal 10 HP";
     private Relation _targetRelation = Relation.FRIENDLY;
     private int _targetCount = 1;
 

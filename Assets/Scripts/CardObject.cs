@@ -10,7 +10,7 @@ public class CardObject : MonoBehaviour
     private readonly float HAND_CUTOFF_POINT_Y = -2;
     private Vector3 offset;
     private bool inHand;
-    private Vector3 cardHandPos;
+    private Vector3 cardPositionInHand;
     private int numberOfTargets;
 
     private int manaCost;
@@ -32,16 +32,18 @@ public class CardObject : MonoBehaviour
         targetLayer = LayerMask.GetMask("Target");
         cardText.text = card.CardText;
         inHand = true;
-        cardHandPos = transform.position;
+        UpdateCardPositionInHand();
 
         hand = GetComponentInParent<HandHandler>();
     }
 
     private void OnMouseDown()
     {
+        Debug.Log("MouseDown");
         if (!hand.cardIsBeingPlayed)
         {
             offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+            Debug.Log("Offset: " + offset);
         }
     }
 
@@ -72,7 +74,6 @@ public class CardObject : MonoBehaviour
             {
                 transform.position = GUIHandler.PlayedCardAnchor.position;
                 hand.cardIsBeingPlayed = true;
-
                 StartCoroutine(RecieveTargetsAndPlay());
             }
             else
@@ -86,8 +87,8 @@ public class CardObject : MonoBehaviour
     {
         if (inHand)
         {
-            transform.position += new Vector3(0, 0.5f, 0);
-            transform.localScale += new Vector3(0.2f, 0.3f, 0);
+            transform.position = cardPositionInHand + new Vector3(0, 2f, -1f);
+            transform.localScale = new Vector3(1.2f, 1.2f, 1);
         }
     }
 
@@ -95,14 +96,21 @@ public class CardObject : MonoBehaviour
     {
         if (inHand)
         {
-            transform.position -= new Vector3(0, 0.5f, 0);
-            transform.localScale -= new Vector3(0.2f, 0.3f, 0);
+            transform.position = cardPositionInHand;
+            transform.localScale = Vector3.one;
         }
+    }
+
+    public void UpdateCardPositionInHand()
+    {
+        cardPositionInHand = transform.position;
     }
 
     private void ReturnCardToHand()
     {
-        transform.position = cardHandPos;
+        transform.position = cardPositionInHand;
+        inHand = true;
+        transform.localScale = Vector3.one;
     }
 
     private void CancelPlay()
@@ -136,6 +144,7 @@ public class CardObject : MonoBehaviour
         {
             PlayCard?.Invoke(targetCharacters);
             hand.cardIsBeingPlayed = false;
+            hand.RemoveCardFromHand(gameObject);
             Destroy(gameObject);
         }
         else
