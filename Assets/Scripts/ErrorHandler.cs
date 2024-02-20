@@ -14,7 +14,8 @@ public static class ErrorHandler
     public static void Init(GameObject errorMessageTextComponent)
     {
         _errorMessageTextComponent = errorMessageTextComponent.GetComponent<TMP_Text>();
-        dummyObject = new GameObject("DummyObject").AddComponent<DummyObject>();
+        _errorMessageTextComponent.text = "";
+        dummyObject = new GameObject("ErrorDummyObject").AddComponent<DummyObject>();
     }
 
     public static void ThrowError(string errorMsg)
