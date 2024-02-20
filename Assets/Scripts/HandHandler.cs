@@ -5,7 +5,8 @@ using UnityEngine;
 public class HandHandler : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
-    
+    [HideInInspector] public bool cardIsBeingPlayed = false;
+
     private void Start()
     {
         GameObject card = Instantiate(cardPrefab, transform);
