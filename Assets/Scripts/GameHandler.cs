@@ -11,7 +11,7 @@ public class GameHandler : MonoBehaviour
     private void Awake()
     {
         CardDatabase.Init();
-        ErrorHandler.Init(_errorMessageObject);
+        ErrorHandler.Init(gui);
         GUIHandler.Init(playedCardAnchor, gui);
         BoardHandler.Init();
     }
