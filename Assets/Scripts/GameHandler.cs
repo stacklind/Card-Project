@@ -5,9 +5,14 @@ using UnityEngine;
 public class GameHandler : MonoBehaviour
 {
     [SerializeField] GameObject _errorMessageObject;
+    [SerializeField] Transform playedCardAnchor;
+    [SerializeField] GUI gui;
+
     private void Awake()
     {
         CardDatabase.Init();
         ErrorHandler.Init(_errorMessageObject);
+        GUIHandler.Init(playedCardAnchor, gui);
+        BoardHandler.Init();
     }
 }
