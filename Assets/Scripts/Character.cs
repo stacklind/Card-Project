@@ -11,7 +11,6 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         GameEvents.RaiseCharacterSpawned(this);
-        GameEvents.RaiseGameStarted();
     }
 
     private void OnMouseDown()

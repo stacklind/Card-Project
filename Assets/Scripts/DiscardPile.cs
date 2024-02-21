@@ -2,26 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiscardPile : MonoBehaviour
+public class DiscardPile : MonoBehaviour, IDestination
 {
-    private List<CardObject> discards = new List<CardObject>();
+    private List<CardInstance> discards = new List<CardInstance>();
 
     private void Awake()
     {
-        GameEvents.onCardPlayed += AddCardToDiscardPile;
+        GameEvents.onDeckEmpty += ShuffleDiscardPileIntoDeck;
+        GameEvents.onMoveCardToDiscardPile += AddCard;
     }
 
-    public void AddCardToDiscardPile(CardObject card)
+    public void AddCard(CardInstance card)
     {
         discards.Add(card);
+        card.SetLocation(this);
+        card.transform.SetParent(transform, false);
+        card.gameObject.SetActive(false);
     }
 
-    public void RemoveCardFromDiscardPile(CardObject card)
+    public void RemoveCard(CardInstance card)
     {
         discards.Remove(card);
     }
 
-    public CardObject[] GetDiscardPile()
+    private void ShuffleDiscardPileIntoDeck(Deck deck)
+    {
+        foreach(CardInstance card in discards)
+        {
+            deck.AddCard(card);
+            discards.Remove(card);
+        }
+    }
+
+    public CardInstance[] GetDiscardPile()
     {
         return discards.ToArray();
     }

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ITargetable
 {
-    public int TargetCount { get; set; }
+    public int TargetCount { get; }
 }
