@@ -4,21 +4,30 @@ using UnityEngine;
 
 public class HealthHandler : MonoBehaviour
 {
+    [SerializeField] private HealthBar healthBar;
     [SerializeField] private int maxHealth;
     [SerializeField] private int currentHealth;
 
-    public delegate void damageTaken(int damage);
-    public event damageTaken DamageTaken;
-
-    public delegate void maxHealthChanged(int value);
-    public event maxHealthChanged MaxHealthChanged;
+    private void Awake()
+    {
+        healthBar.Init(currentHealth, maxHealth);
+    }
 
     public int CurrentHealth
     {
         set
         {
             currentHealth = value > maxHealth ? maxHealth : value;
-            DamageTaken?.Invoke(currentHealth);
+            if(value < 0)
+            {
+                GameEvents.RaiseDamageTaken(GetComponent<Character>(), value);
+            }
+            else
+            {
+
+            }
+
+            healthBar.HealthChanged(value);
         }
 
         get
@@ -37,8 +46,7 @@ public class HealthHandler : MonoBehaviour
             {
                 currentHealth = maxHealth;
             }
-
-            MaxHealthChanged?.Invoke(maxHealth);
+            healthBar.MaxHealthChanged(value);
         }
 
         get

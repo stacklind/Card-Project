@@ -5,6 +5,7 @@ using TMPro;
 
 public class CardObject : MonoBehaviour
 {
+    private static bool cardIsBeingPlayed = false;
     private LayerMask targetLayer;
 
     private readonly float HAND_CUTOFF_POINT_Y = -2;
@@ -15,16 +16,13 @@ public class CardObject : MonoBehaviour
 
     private int manaCost;
     private TMP_Text cardText;
-    private delegate void playCardFunction(Character[] targets);
-    private playCardFunction PlayCard;
+    private delegate void PlayCardFunction(Character[] targets);
+    private PlayCardFunction playCard;
     private Relation targetRelationRequirement;
-
-    private HandHandler hand;
-    private int id;
 
     public void Init(ICard card)
     {
-        PlayCard = card.Play;
+        playCard = card.Play;
         cardText = transform.Find("CardText").GetComponent<TextMeshPro>();
         manaCost = card.ManaCost;
         targetRelationRequirement = card.TargetRelation;
@@ -34,15 +32,12 @@ public class CardObject : MonoBehaviour
         cardText.text = card.CardText;
         inHand = true;
         UpdateCardPositionInHand();
-
-        hand = GetComponentInParent<HandHandler>();
-        id = card.
     }
 
     private void OnMouseDown()
     {
         Debug.Log("MouseDown");
-        if (!hand.cardIsBeingPlayed)
+        if (!cardIsBeingPlayed)
         {
             offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
             Debug.Log("Offset: " + offset);
@@ -51,7 +46,7 @@ public class CardObject : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        if (!hand.cardIsBeingPlayed)
+        if (!cardIsBeingPlayed)
         {
             Vector3 currentScreenPoint = Input.mousePosition;
             Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + offset;
@@ -70,13 +65,15 @@ public class CardObject : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!hand.cardIsBeingPlayed)
+        if (!cardIsBeingPlayed)
         {
             if (!inHand)
             {
-                transform.position = GUIHandler.PlayedCardAnchor.position;
-                hand.cardIsBeingPlayed = true;
-                StartCoroutine(RecieveTargetsAndPlay());
+                cardIsBeingPlayed = true;
+                TargetAquisition targetAquisition = new TargetAquisition(numberOfTargets, targetRelationRequirement);
+                GameEvents.RaiseTargetsRequired(targetAquisition);
+                GameEvents.RaiseCardPlayed(this);
+                SetupEventListeners();
             }
             else
             {
@@ -117,41 +114,29 @@ public class CardObject : MonoBehaviour
 
     private void CancelPlay()
     {
-        hand.cardIsBeingPlayed = false;
+        cardIsBeingPlayed = false;
+        ClearEventListeners();
         ReturnCardToHand();
     }
 
-    private IEnumerator RecieveTargetsAndPlay()
+    private void PlayCard(Character[] targets)
     {
-        Character[] targetCharacters;
 
-        if (numberOfTargets == 0)
-        {
-            targetCharacters = BoardHandler.GetAllCharactersWithRelation(targetRelationRequirement);
-        }
-        else
-        {
-            TargetAquisition targetAquisition = new TargetAquisition(numberOfTargets, targetRelationRequirement);
-            GUIHandler.AquireTargets(targetAquisition);
+        playCard?.Invoke(targets);
+        cardIsBeingPlayed = false;
+        ClearEventListeners();
+        GameEvents.RaiseCardResolved(this);
+        gameObject.SetActive(false);
+    }
 
-            while (targetAquisition.TargetsRemaining > 0)
-            {
-                yield return null;
-            }
-
-            targetCharacters = targetAquisition.GetTargets();
-        }
-
-        if (targetCharacters.Length > 0)
-        {
-            PlayCard?.Invoke(targetCharacters);
-            hand.cardIsBeingPlayed = false;
-            hand.RemoveCardFromHand(gameObject);
-            Destroy(gameObject);
-        }
-        else
-        {
-            CancelPlay();
-        }
+    private void SetupEventListeners()
+    {
+        GameEvents.onTargetingComplete += PlayCard;
+        GameEvents.onTargetingCanceled += CancelPlay;
+    }
+    private void ClearEventListeners()
+    {
+        GameEvents.onTargetingComplete -= PlayCard;
+        GameEvents.onTargetingCanceled -= CancelPlay;
     }
 }

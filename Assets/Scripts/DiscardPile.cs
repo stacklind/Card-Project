@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class DiscardPile : MonoBehaviour
 {
-    private List<int> discards = new List<int>();
+    private List<CardObject> discards = new List<CardObject>();
 
-    public void AddCardToDiscardPile(int cardID)
+    private void Awake()
     {
-        discards.Add(cardID);
+        GameEvents.onCardPlayed += AddCardToDiscardPile;
     }
 
-    public void RemoveCardFromDiscardPile(int cardID)
+    public void AddCardToDiscardPile(CardObject card)
     {
-        discards.Remove(cardID);
+        discards.Add(card);
     }
 
-    public int[] GetDiscardPile()
+    public void RemoveCardFromDiscardPile(CardObject card)
+    {
+        discards.Remove(card);
+    }
+
+    public CardObject[] GetDiscardPile()
     {
         return discards.ToArray();
     }

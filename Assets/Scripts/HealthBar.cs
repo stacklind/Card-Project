@@ -12,22 +12,22 @@ public class HealthBar : MonoBehaviour
 
     private void Awake()
     {
-        HealthHandler healthHandler = transform.parent.GetComponent<HealthHandler>();
-        Slider bar = gameObject.GetComponent<Slider>();
-        currentHealth = healthHandler.CurrentHealth;
-        maxHealth = healthHandler.MaxHealth;
-
-        healthHandler.DamageTaken += HealthChanged;
-        healthHandler.MaxHealthChanged += MaxHealthChanged;
+        Slider bar = GetComponent<Slider>();
     }
 
-    private void HealthChanged(int value)
+    public void Init(int currentHealth, int maxHealth)
+    {
+        this.currentHealth = currentHealth;
+        this.maxHealth = maxHealth;
+    }
+
+    public void HealthChanged(int value)
     {
         currentHealth = value;
         StartCoroutine(UpdateBar());
     }
 
-    private void MaxHealthChanged(int value)
+    public void MaxHealthChanged(int value)
     {
         maxHealth = value;
         StartCoroutine(UpdateBar());

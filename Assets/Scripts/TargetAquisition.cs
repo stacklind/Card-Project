@@ -5,39 +5,40 @@ using UnityEngine;
 public class TargetAquisition
 {
     private Character[] targets;
-    private int _targetsRemaining;
-    private Relation _relationRequirement;
-    public delegate void TargetingTextUpdate(int value);
-    public TargetingTextUpdate targetingTextUpdate;
-
-    public int TargetsRemaining 
-    {
-        get => _targetsRemaining; 
-        private set 
-        {
-            _targetsRemaining = value;
-            if(_targetsRemaining == 0)
-            {
-                GUIHandler.AquisitionComplete();
-            }
-            else
-            {
-                targetingTextUpdate(_targetsRemaining);
-            }
-        }
-    }
-    public Relation RelationRequirement { get => _relationRequirement; }
+    private int targetsRemaining;
+    private Relation relationRequirement;
 
     public TargetAquisition(int numberOfTargets, Relation relation)
     {
-        _targetsRemaining = numberOfTargets;
-        targets = new Character[_targetsRemaining];
-        _relationRequirement = relation;
+        targetsRemaining = numberOfTargets;
+        targets = new Character[targetsRemaining];
+        relationRequirement = relation;
+        GameEvents.onCharacterClicked += IsValidTarget;
+        GameEvents.onTargetingCanceled += Cancel;
     }
 
-    public void AddTarget(Character target)
+    public void IsValidTarget(Character target)
     {
-        targets[TargetsRemaining-- - 1] = target;
+        if(target.relation == relationRequirement)
+        {
+            AddTarget(target);
+            GameEvents.RaiseTargetFound(targetsRemaining);
+        }
+        else
+        {
+            ErrorHandler.ThrowError("Invalid target");
+        }
+    }
+
+    private void AddTarget(Character target)
+    {
+        targets[targetsRemaining-- - 1] = target;
+
+        if(targetsRemaining == 0)
+        {
+            GameEvents.RaiseTargetingComplete(targets);
+            ClearEventListeners();
+        }
     }
 
     public Character[] GetTargets()
@@ -48,6 +49,13 @@ public class TargetAquisition
     public void Cancel()
     {
         targets = new Character[0];
-        TargetsRemaining = 0;
+        targetsRemaining = 0;
+        ClearEventListeners();
+    }
+
+    private void ClearEventListeners()
+    {
+        GameEvents.onCharacterClicked -= IsValidTarget;
+        GameEvents.onTargetingCanceled -= Cancel;
     }
 }

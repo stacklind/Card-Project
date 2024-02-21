@@ -11,11 +11,16 @@ public class HandHandler : MonoBehaviour
     [SerializeField] private List<int> deck;
 
     private List<GameObject> hand = new List<GameObject>();
-    [HideInInspector] public bool cardIsBeingPlayed = false;
 
-    private void Start()
+    private void Awake()
     {
-        for(int i = 0; i < 5; i++)
+        GameEvents.onGameStart += DrawStartingHand;
+        GameEvents.onCardResolved += RemoveCardFromHand;
+    }
+
+    private void DrawStartingHand()
+    {
+        for (int i = 0; i < 5; i++)
         {
             DrawCard();
         }
@@ -40,11 +45,13 @@ public class HandHandler : MonoBehaviour
 
         card.GetComponent<CardObject>().Init(CardDatabase.GetCardByID(deck[cardToDraw]));
         deck.RemoveAt(cardToDraw);
+
+        GameEvents.RaiseCardDraw();
     }
 
-    public void RemoveCardFromHand(GameObject card)
+    public void RemoveCardFromHand(CardObject card)
     {
-        hand.Remove(card);
+        hand.Remove(card.gameObject);
         ReorganizeHand();
     }
 

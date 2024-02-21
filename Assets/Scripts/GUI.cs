@@ -1,23 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 public class GUI : MonoBehaviour
 {
     [SerializeField] private TargetingGUI targetingGUI;
     [SerializeField] private TMP_Text errorMessageTextComponent;
+    [SerializeField] private Transform displayCardAnchor;
+
+    private void Awake()
+    {
+        ErrorHandler.displayErrorMessage += DisplayError;
+        GameEvents.onTargetsRequired += DisplayTargetingGUI;
+        GameEvents.onCardPlayed += DisplayCard;
+    }
+
+    public void DisplayCard(CardObject card)
+    {
+        card.transform.position = displayCardAnchor.position;
+    }
 
     public void DisplayTargetingGUI(TargetAquisition targetAquisition)
     {
-        targetAquisition.targetingTextUpdate += targetingGUI.UpdateTargetingText;
-        targetAquisition.targetingTextUpdate(targetAquisition.TargetsRemaining);
         targetingGUI.gameObject.SetActive(true);
     }
 
     public void HideTargetingGUI()
     {
-        GUIHandler.CancelTargetAquisition();
+        GameEvents.RaiseTargetingCanceled();
         targetingGUI.gameObject.SetActive(false);
     }
     
