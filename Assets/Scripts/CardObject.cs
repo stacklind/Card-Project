@@ -20,6 +20,7 @@ public class CardObject : MonoBehaviour
     private Relation targetRelationRequirement;
 
     private HandHandler hand;
+    private int id;
 
     public void Init(ICard card)
     {
@@ -35,6 +36,7 @@ public class CardObject : MonoBehaviour
         UpdateCardPositionInHand();
 
         hand = GetComponentInParent<HandHandler>();
+        id = card.
     }
 
     private void OnMouseDown()
