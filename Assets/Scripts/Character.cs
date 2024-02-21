@@ -4,33 +4,19 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    [SerializeField] HealthHandler healthHandler;
+
     public Relation relation;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameEvents.RaiseCharacterSpawned(this);
+        GameEvents.RaiseGameStarted();
     }
 
     private void OnMouseDown()
     {
-        if (GUIHandler.AquiringTargets)
-        {
-            if(GUIHandler.TargetAquisition.RelationRequirement == relation)
-            {
-                GUIHandler.TargetAquisition.AddTarget(this);
-            }
-            else
-            {
-                ErrorHandler.ThrowError("Invalid target");
-            }
-        }
+        GameEvents.RaiseCharacterClicked(this);
     }
 }
 

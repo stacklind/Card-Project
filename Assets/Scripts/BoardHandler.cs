@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class BoardHandler
+public class BoardHandler : MonoBehaviour
 {
-    private static List<Character> enemies;
-    private static List<Character> allies;
+    private List<Character> enemies;
+    private List<Character> allies;
 
-    public static void Init()
+    public void Awake()
     {
         enemies = new List<Character>();
-        allies = new List<Character>(); ;
+        allies = new List<Character>();
+        GameEvents.onCharacterSpawned += AddCharacter;
     }
 
-    public static void AddCharacter(Character character)
+    private void AddCharacter(Character character)
     {
         if(character.relation == Relation.UNFRIENDLY)
         {
@@ -25,7 +26,7 @@ public static class BoardHandler
         }
     }
 
-    public static void RemoveCharacter(Character character)
+    private void RemoveCharacter(Character character)
     {
         if (character.relation == Relation.UNFRIENDLY)
         {
@@ -34,27 +35,6 @@ public static class BoardHandler
         else
         {
             allies.Remove(character);
-        }
-    }
-
-    public static Character[] GetAllCharacters()
-    {
-        Character[] allCharacters = new Character[enemies.Count + allies.Count];
-        enemies.CopyTo(allCharacters, 0);
-        allies.CopyTo(allCharacters, enemies.Count);
-
-        return allCharacters;
-    }
-
-    public static Character[] GetAllCharactersWithRelation(Relation relation)
-    {
-        if(relation == Relation.UNFRIENDLY)
-        {
-            return enemies.ToArray();
-        }
-        else
-        {
-            return allies.ToArray();
         }
     }
 }

@@ -7,6 +7,11 @@ public class TargetingGUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text targetingText;
 
+    private void Awake()
+    {
+        GameEvents.onTargetFound += UpdateTargetingText;
+    }
+
     public void UpdateTargetingText(int targetsRemaining)
     {
         targetingText.text = "Select " + (targetsRemaining > 1 ? targetsRemaining + " targets" : "1 target");

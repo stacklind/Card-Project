@@ -240,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetingGUI: {fileID: 1034515170}
   errorMessageTextComponent: {fileID: 1339437055}
+  displayCardAnchor: {fileID: 1494275665}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +369,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 5425970864209582856, guid: e15a989a088c79c4497170cac3ba741d, type: 3}
   deck: 000000000000000001000000010000000100000000000000010000000000000000000000
-  cardIsBeingPlayed: 0
 --- !u!1 &664049814
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,6 +505,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 664049814}
   m_CullTransparentMesh: 1
+--- !u!1 &760545000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 760545002}
+  - component: {fileID: 760545001}
+  m_Layer: 0
+  m_Name: CombatLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &760545001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760545000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1850e8e6247c81f439df538542d80bf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &760545002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760545000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.1072636, y: -2.9884388, z: -16.330496}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1034515168
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,6 +631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58241ce26cf196a4cb9e8aeed909705b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBar: {fileID: 1395481215}
   maxHealth: 100
   currentHealth: 100
 --- !u!212 &1165348387
@@ -684,6 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 998f1017eff264a4db88972c5715ff88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthHandler: {fileID: 1165348386}
   relation: 2
 --- !u!1 &1188423925
 GameObject:
@@ -1512,6 +1557,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1623112067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1623112069}
+  - component: {fileID: 1623112068}
+  m_Layer: 0
+  m_Name: BoardHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1623112068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623112067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 102835e9ee1e28245865a3bdd80e0a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1623112069
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623112067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.1072636, y: -2.9884388, z: -16.330496}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1883617562
 GameObject:
   m_ObjectHideFlags: 0
@@ -1523,7 +1611,7 @@ GameObject:
   - component: {fileID: 1883617564}
   - component: {fileID: 1883617563}
   m_Layer: 0
-  m_Name: GameHandler
+  m_Name: EventsHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1538,12 +1626,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1883617562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4573b834d1daf5047851839fd2ad9365, type: 3}
+  m_Script: {fileID: 11500000, guid: f786c09e43f6d164c9f22466cb7647e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _errorMessageObject: {fileID: 1339437053}
-  playedCardAnchor: {fileID: 1494275665}
-  gui: {fileID: 381220921}
 --- !u!4 &1883617564
 Transform:
   m_ObjectHideFlags: 0

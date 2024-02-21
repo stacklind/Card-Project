@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class CardDatabase
+public class CardDatabase
 {
     private static List<ICard> cards;
     public static void Init()
