@@ -7,9 +7,11 @@ public class CardDatabase
     private static List<ICard> cards;
     public static void Init()
     {
-        cards = new List<ICard>();
-        cards.Add(new Stab());              // ID 0
-        cards.Add(new HealingPotion());     // ID 1
+        cards = new List<ICard>
+        {
+            new Stab(),              // ID 0
+            new HealingPotion()     // ID 1
+        };
     }
 
     public static ICard GetCardByID(int id)

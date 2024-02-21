@@ -7,6 +7,10 @@ public class CombatLoader : MonoBehaviour
     private void Awake()
     {
         CardDatabase.Init();
+    }
+
+    private void Start()
+    {
         GameEvents.RaiseGameStarted();
     }
 }

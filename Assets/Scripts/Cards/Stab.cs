@@ -8,11 +8,13 @@ public class Stab : ICard, ITargetable
     private string _cardText = "Deal 10 damage";
     private Relation _targetRelation = Relation.UNFRIENDLY;
     private int _targetCount = 1;
+    private DestinationType _destination = DestinationType.DISCARD;
 
     public int ManaCost { get; set; }
-    public string CardText { get => _cardText; set => _cardText = value; }
-    public Relation TargetRelation { get => _targetRelation; set => _targetRelation = value; }
-    public int TargetCount { get => _targetCount; set => _targetCount = value; }
+    public string CardText { get => _cardText; }
+    public Relation TargetRelation { get => _targetRelation; }
+    public int TargetCount { get => _targetCount; }
+    public DestinationType Destination { get => _destination; }
 
     public void Play(Character[] targets)
     {

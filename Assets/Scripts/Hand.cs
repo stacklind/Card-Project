@@ -1,57 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using UnityEngine;
 
-public class HandHandler : MonoBehaviour
+public class Hand : MonoBehaviour, IDestination
 {
     private float CARD_POS_INCRIMENT = 2.2f;
     private int HAND_MAX_SIZE = 7;
 
-    [SerializeField] private GameObject cardPrefab;
-    [SerializeField] private List<int> deck;
-
-    private List<GameObject> hand = new List<GameObject>();
+    private List<CardInstance> hand = new List<CardInstance>();
 
     private void Awake()
     {
-        GameEvents.onGameStart += DrawStartingHand;
-        GameEvents.onCardResolved += RemoveCardFromHand;
+        GameEvents.onMoveCardToHand += AddCard;
     }
 
-    private void DrawStartingHand()
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            DrawCard();
-        }
-    }
-
-    public void DrawCard()
+    public void AddCard(CardInstance card)
     {
         int handSize = hand.Count;
-        int cardToDraw = Random.Range(0, deck.Count - 1);
-
-        GameObject card = Instantiate(cardPrefab, transform);
         hand.Add(card);
+        card.transform.SetParent(transform);
+        card.SetLocation(this);
 
-        if(handSize > 0)
+        if (handSize > 0)
         {
             ReorganizeHand();
         }
         else
         {
             card.transform.localPosition = new Vector3(0, 0, 0);
+            
         }
-
-        card.GetComponent<CardObject>().Init(CardDatabase.GetCardByID(deck[cardToDraw]));
-        deck.RemoveAt(cardToDraw);
-
-        GameEvents.RaiseCardDraw();
+        card.gameObject.SetActive(true);
     }
 
-    public void RemoveCardFromHand(CardObject card)
+    public void RemoveCard(CardInstance card)
     {
-        hand.Remove(card.gameObject);
+        hand.Remove(card);
         ReorganizeHand();
     }
 
@@ -63,7 +48,7 @@ public class HandHandler : MonoBehaviour
             float yPos = (hand.Count % 2 == 0 ? Mathf.Min(Mathf.Abs(hand.Count / 2 - 1 - i), Mathf.Abs(hand.Count / 2 - i)) : Mathf.Abs(hand.Count / 2 - i)) * -0.1f;
             float zPos = -i / 10f;
             hand[i].transform.localPosition = new Vector3(xPos, yPos, zPos);
-            hand[i].GetComponent<CardObject>().UpdateCardPositionInHand();
+            hand[i].GetComponent<CardInstance>().UpdateCardPositionInHand();
         }
     }
 }

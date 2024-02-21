@@ -14,10 +14,11 @@ public class GUI : MonoBehaviour
     {
         ErrorHandler.displayErrorMessage += DisplayError;
         GameEvents.onTargetsRequired += DisplayTargetingGUI;
+        GameEvents.onTargetingComplete += HideTargetingGUI;
         GameEvents.onCardPlayed += DisplayCard;
     }
 
-    public void DisplayCard(CardObject card)
+    public void DisplayCard(CardInstance card)
     {
         card.transform.position = displayCardAnchor.position;
     }
@@ -32,7 +33,12 @@ public class GUI : MonoBehaviour
         GameEvents.RaiseTargetingCanceled();
         targetingGUI.gameObject.SetActive(false);
     }
-    
+
+    public void HideTargetingGUI(Character[] targets)
+    {
+        targetingGUI.gameObject.SetActive(false);
+    }
+
     public void DisplayError(string errorText, float errorDisplayTime)
     {
         StartCoroutine(DisplayErrorCoroutine(errorText, errorDisplayTime));

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using UnityEngine;
 
 public class GameEvents : MonoBehaviour
@@ -7,14 +8,35 @@ public class GameEvents : MonoBehaviour
     public delegate void OnGameStart();
     public static event OnGameStart onGameStart;
 
-    public delegate void OnCardPlayed(CardObject card);
+    public delegate void OnRequestCardCreation(int cardID, IDestination destionation);
+    public static event OnRequestCardCreation onRequestCardCreation;
+
+    public delegate void OnCardPlayed(CardInstance card);
     public static event OnCardPlayed onCardPlayed;
 
-    public delegate void OnCardResolved(CardObject card);
-    public static event OnCardResolved onCardResolved;
+    public delegate void OnDrawCard();
+    public static event OnDrawCard onDrawCard;
 
-    public delegate void OnCardDraw();
-    public static event OnCardDraw onCardDraw;
+    public delegate void OnDeckEmpty(Deck deck);
+    public static event OnDeckEmpty onDeckEmpty;
+
+    public delegate void OnMoveCardToDeck(CardInstance card);
+    public static event OnMoveCardToDeck onMoveCardToDeck;
+
+    public delegate void OnMoveCardToDiscardPile(CardInstance card);
+    public static event OnMoveCardToDiscardPile onMoveCardToDiscardPile;
+
+    public delegate void OnMoveCardToHand(CardInstance card);
+    public static event OnMoveCardToHand onMoveCardToHand;
+
+    public delegate void OnRemoveCardFromDeck(CardInstance card);
+    public static event OnRemoveCardFromDeck onRemoveCardFromDeck;
+
+    public delegate void OnRemoveCardFromDiscardPile(CardInstance card);
+    public static event OnRemoveCardFromDeck onRemoveCardFromDiscardPile;
+
+    public delegate void OnRemoveCardFromHand(CardInstance card);
+    public static event OnRemoveCardFromDeck onRemoveCardFromHand;
 
     public delegate void OnDamageTaken(Character target, int damage);
     public static event OnDamageTaken onDamageTaken;
@@ -42,19 +64,54 @@ public class GameEvents : MonoBehaviour
         onGameStart?.Invoke();
     }
 
-    public static void RaiseCardPlayed(CardObject card)
+    public static void RaiseRequestCardCreation(int cardID, IDestination destination)
+    {
+        onRequestCardCreation?.Invoke(cardID, destination);
+    }
+
+    public static void RaiseCardPlayed(CardInstance card)
     {
         onCardPlayed?.Invoke(card);
     }
 
-    public static void RaiseCardResolved(CardObject card)
+    public static void RaiseDrawCard()
     {
-        onCardResolved?.Invoke(card);
+        onDrawCard?.Invoke();
     }
 
-    public static void RaiseCardDraw()
+    public static void RaiseDeckEmpty(Deck deck)
     {
-        onCardDraw?.Invoke();
+        onDeckEmpty?.Invoke(deck);
+    }
+
+    public static void RaiseMoveCardToDeck(CardInstance card)
+    {
+        onMoveCardToDeck?.Invoke(card);
+    }
+
+    public static void RaiseMoveCardToDiscardPile(CardInstance card)
+    {
+        onMoveCardToDiscardPile?.Invoke(card);
+    }
+
+    public static void RaiseMoveCardToHand(CardInstance card)
+    {
+        onMoveCardToHand?.Invoke(card);
+    }
+
+    public static void RaiseRemoveCardFromDeck(CardInstance card)
+    {
+        onRemoveCardFromDeck?.Invoke(card);
+    }
+
+    public static void RaiseRemoveCardFromDiscardPile(CardInstance card)
+    {
+        onRemoveCardFromDiscardPile?.Invoke(card);
+    }
+
+    public static void RaiseRemoveCardFromHand(CardInstance card)
+    {
+        onRemoveCardFromHand?.Invoke(card);
     }
 
     public static void RaiseDamageTaken(Character target, int damage)

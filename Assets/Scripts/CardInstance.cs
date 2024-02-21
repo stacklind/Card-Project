@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class CardObject : MonoBehaviour
+public class CardInstance : MonoBehaviour
 {
     private static bool cardIsBeingPlayed = false;
-    private LayerMask targetLayer;
 
     private readonly float HAND_CUTOFF_POINT_Y = -2;
     private Vector3 offset;
@@ -19,6 +18,8 @@ public class CardObject : MonoBehaviour
     private delegate void PlayCardFunction(Character[] targets);
     private PlayCardFunction playCard;
     private Relation targetRelationRequirement;
+    private DestinationType destinationType;
+    private IDestination location;
 
     public void Init(ICard card)
     {
@@ -27,20 +28,22 @@ public class CardObject : MonoBehaviour
         manaCost = card.ManaCost;
         targetRelationRequirement = card.TargetRelation;
         numberOfTargets = card is IArea ? 0 : (card as ITargetable).TargetCount;
-
-        targetLayer = LayerMask.GetMask("Target");
         cardText.text = card.CardText;
         inHand = true;
+        destinationType = card.Destination;
         UpdateCardPositionInHand();
+    }
+    
+    public void SetLocation(IDestination destination)
+    {
+        location = destination;
     }
 
     private void OnMouseDown()
     {
-        Debug.Log("MouseDown");
         if (!cardIsBeingPlayed)
         {
             offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-            Debug.Log("Offset: " + offset);
         }
     }
 
@@ -70,10 +73,11 @@ public class CardObject : MonoBehaviour
             if (!inHand)
             {
                 cardIsBeingPlayed = true;
-                TargetAquisition targetAquisition = new TargetAquisition(numberOfTargets, targetRelationRequirement);
-                GameEvents.RaiseTargetsRequired(targetAquisition);
                 GameEvents.RaiseCardPlayed(this);
+                TargetAquisition targetAquisition = new TargetAquisition(numberOfTargets, targetRelationRequirement);
                 SetupEventListeners();
+                GameEvents.RaiseTargetsRequired(targetAquisition);
+                
             }
             else
             {
@@ -125,8 +129,20 @@ public class CardObject : MonoBehaviour
         playCard?.Invoke(targets);
         cardIsBeingPlayed = false;
         ClearEventListeners();
-        GameEvents.RaiseCardResolved(this);
-        gameObject.SetActive(false);
+        location.RemoveCard(this);
+        switch (destinationType)
+        {
+            case DestinationType.DECK:
+                GameEvents.RaiseMoveCardToDeck(this);
+                break;
+            case DestinationType.HAND:
+                GameEvents.RaiseMoveCardToHand(this);
+                break;
+            case DestinationType.DISCARD:
+                GameEvents.RaiseMoveCardToDiscardPile(this);
+                break;
+        }
+        
     }
 
     private void SetupEventListeners()
