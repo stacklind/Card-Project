@@ -30,8 +30,9 @@ public class DiscardPile : MonoBehaviour, IDestination
         foreach(CardInstance card in discards)
         {
             deck.AddCard(card);
-            discards.Remove(card);
+            
         }
+        discards.Clear();
     }
 
     public CardInstance[] GetDiscardPile()

@@ -19,6 +19,7 @@ public class Hand : MonoBehaviour, IDestination
     {
         int handSize = hand.Count;
         hand.Add(card);
+        card.SetInHand();
         card.transform.SetParent(transform);
         card.SetLocation(this);
 

@@ -91,7 +91,6 @@ public class CardInstance : MonoBehaviour
         if (inHand)
         {
             transform.position = cardPositionInHand + new Vector3(0, 2f, -1f);
-            transform.localScale = new Vector3(1.2f, 1.2f, 1);
         }
     }
 
@@ -100,13 +99,28 @@ public class CardInstance : MonoBehaviour
         if (inHand)
         {
             transform.position = cardPositionInHand;
-            transform.localScale = Vector3.one;
+            ResetCardSize();
         }
+    }
+
+    private void IncreaseCardSize()
+    {
+        transform.localScale = new Vector3(1.2f, 1.2f, 1);
+    }
+
+    private void ResetCardSize()
+    {
+        transform.localScale = Vector3.one;
     }
 
     public void UpdateCardPositionInHand()
     {
         cardPositionInHand = transform.position;
+    }
+
+    public void SetInHand()
+    {
+        inHand = true;
     }
 
     private void ReturnCardToHand()
@@ -128,6 +142,7 @@ public class CardInstance : MonoBehaviour
 
         playCard?.Invoke(targets);
         cardIsBeingPlayed = false;
+        ResetCardSize();
         ClearEventListeners();
         location.RemoveCard(this);
         switch (destinationType)
