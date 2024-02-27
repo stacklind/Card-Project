@@ -12,11 +12,12 @@ public class BoardHandler : MonoBehaviour
         enemies = new List<Character>();
         allies = new List<Character>();
         GameEvents.onCharacterSpawned += AddCharacter;
+        GameEvents.onCharacterRequestTargets += SendTargetsToCharacter;
     }
 
     private void AddCharacter(Character character)
     {
-        if(character.relation == Relation.UNFRIENDLY)
+        if(character.Relation == Relation.UNFRIENDLY)
         {
             enemies.Add(character);
         }
@@ -28,7 +29,7 @@ public class BoardHandler : MonoBehaviour
 
     private void RemoveCharacter(Character character)
     {
-        if (character.relation == Relation.UNFRIENDLY)
+        if (character.Relation == Relation.UNFRIENDLY)
         {
             enemies.Remove(character);
         }
@@ -36,5 +37,23 @@ public class BoardHandler : MonoBehaviour
         {
             allies.Remove(character);
         }
+    }
+
+    public Character[] SendTargetsToCharacter(Character character)
+    {
+        if (character.Relation == Relation.UNFRIENDLY)
+        {
+            return allies.ToArray();
+        }
+        else
+        {
+            
+            return enemies.ToArray();
+        }
+    }
+
+    public void TempEnemyTurn()
+    {
+        enemies[0].TakeTurn();
     }
 }

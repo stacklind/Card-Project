@@ -18,6 +18,6 @@ public class HealingPotion : ICard, ITargetable
 
     public void Play(Character[] targets)
     {
-        targets[0].GetComponent<HealthHandler>().CurrentHealth += _healingAmount;
+        targets[0].Heal(_healingAmount);
     }
 }
