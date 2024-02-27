@@ -8,8 +8,14 @@ public class GameEvents : MonoBehaviour
     public delegate void OnGameStart();
     public static event OnGameStart onGameStart;
 
+    public delegate void OnLoadPlayer();
+    public static event OnLoadPlayer onLoadPlayer;
+
     public delegate void OnRequestCardCreation(int cardID, IDestination destionation);
     public static event OnRequestCardCreation onRequestCardCreation;
+
+    public delegate void OnRequestCharacterCreation(int characterID);
+    public static event OnRequestCharacterCreation onRequestCharacterCreation;
 
     public delegate void OnCardPlayed(CardInstance card);
     public static event OnCardPlayed onCardPlayed;
@@ -59,14 +65,27 @@ public class GameEvents : MonoBehaviour
     public delegate void OnCharacterClicked(Character character);
     public static event OnCharacterClicked onCharacterClicked;
 
+    public delegate Character[] OnCharacterRequestTargets(Character character);
+    public static event OnCharacterRequestTargets onCharacterRequestTargets;
+
     public static void RaiseGameStarted()
     {
         onGameStart?.Invoke();
     }
 
+    public static void RaiseLoadPlayer()
+    {
+        onLoadPlayer?.Invoke();
+    }
+
     public static void RaiseRequestCardCreation(int cardID, IDestination destination)
     {
         onRequestCardCreation?.Invoke(cardID, destination);
+    }
+
+    public static void RaiseRequestCharacterCreation(int characterID)
+    {
+        onRequestCharacterCreation?.Invoke(characterID);
     }
 
     public static void RaiseCardPlayed(CardInstance card)
@@ -147,5 +166,10 @@ public class GameEvents : MonoBehaviour
     public static void RaiseCharacterClicked(Character character)
     {
         onCharacterClicked?.Invoke(character);
+    }
+
+    public static Character[] RaiseCharacterRequestTargets(Character character)
+    {
+        return onCharacterRequestTargets?.Invoke(character);
     }
 }

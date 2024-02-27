@@ -19,7 +19,7 @@ public class TargetAquisition
 
     public void IsValidTarget(Character target)
     {
-        if(target.relation == relationRequirement)
+        if(target.Relation == relationRequirement)
         {
             AddTarget(target);
             GameEvents.RaiseTargetFound(targetsRemaining);

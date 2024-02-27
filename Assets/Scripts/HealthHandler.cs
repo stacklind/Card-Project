@@ -18,15 +18,6 @@ public class HealthHandler : MonoBehaviour
         set
         {
             currentHealth = value > maxHealth ? maxHealth : value;
-            if(value < 0)
-            {
-                GameEvents.RaiseDamageTaken(GetComponent<Character>(), value);
-            }
-            else
-            {
-
-            }
-
             healthBar.HealthChanged(value);
         }
 

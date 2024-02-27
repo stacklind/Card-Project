@@ -48,6 +48,5 @@ public class HealthBar : MonoBehaviour
         }
 
         barTransform.localScale = newScale;
-        //yield return null;
     }
 }

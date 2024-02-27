@@ -18,6 +18,6 @@ public class Stab : ICard, ITargetable
 
     public void Play(Character[] targets)
     {
-        targets[0].GetComponent<HealthHandler>().CurrentHealth -= _damageAmount;
+        targets[0].Damage(_damageAmount);
     }
 }
