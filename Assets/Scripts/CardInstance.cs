@@ -11,26 +11,19 @@ public class CardInstance : MonoBehaviour
     private Vector3 offset;
     private bool inHand;
     private Vector3 cardPositionInHand;
-    private int numberOfTargets;
 
+    private Card card;
     private int manaCost;
     private TMP_Text cardText;
-    private delegate void PlayCardFunction(Character[] targets);
-    private PlayCardFunction playCard;
-    private Relation targetRelationRequirement;
-    private DestinationType destinationType;
     private IDestination location;
 
-    public void Init(ICard card)
+    public void Init(Card card)
     {
-        playCard = card.Play;
+        this.card = card;
         cardText = transform.Find("CardText").GetComponent<TextMeshPro>();
         manaCost = card.ManaCost;
-        targetRelationRequirement = card.TargetRelation;
-        numberOfTargets = card is IArea ? 0 : (card as ITargetable).TargetCount;
-        cardText.text = card.CardText;
+        cardText.text = card.ToString();
         inHand = true;
-        destinationType = card.Destination;
         UpdateCardPositionInHand();
     }
     
@@ -74,9 +67,8 @@ public class CardInstance : MonoBehaviour
             {
                 cardIsBeingPlayed = true;
                 GameEvents.RaiseCardPlayed(this);
-                TargetAquisition targetAquisition = new TargetAquisition(numberOfTargets, targetRelationRequirement);
                 SetupEventListeners();
-                GameEvents.RaiseTargetsRequired(targetAquisition);
+                card.Play();
                 
             }
             else
@@ -127,7 +119,7 @@ public class CardInstance : MonoBehaviour
     {
         transform.position = cardPositionInHand;
         inHand = true;
-        transform.localScale = Vector3.one;
+        ResetCardSize();
     }
 
     private void CancelPlay()
@@ -139,13 +131,11 @@ public class CardInstance : MonoBehaviour
 
     private void PlayCard(Character[] targets)
     {
-
-        playCard?.Invoke(targets);
         cardIsBeingPlayed = false;
         ResetCardSize();
         ClearEventListeners();
         location.RemoveCard(this);
-        switch (destinationType)
+        switch (card.DestinationType)
         {
             case DestinationType.DECK:
                 GameEvents.RaiseMoveCardToDeck(this);

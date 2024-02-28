@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Database
 {
-    private static List<ICard> cards;
+    private static List<Card> cards;
     private static List<Ability> abilities;
     private static List<Behaviour> behaviours;
 
     public static void Init()
     {
-        cards = new List<ICard>
+        cards = new List<Card>
         {
             new Stab(),                     // ID 0
             new HealingPotion()             // ID 1
@@ -27,7 +27,7 @@ public class Database
         };
     }
 
-    public static ICard GetCardByID(int id)
+    public static Card GetCardByID(int id)
     {
         return cards[id];
     }

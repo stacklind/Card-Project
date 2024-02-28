@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-public class HealingPotion : ICard, ITargetable
+public class HealingPotion : Card
 {
-    private int _healingAmount = 10;
-    private string _cardText = "Heal 10 HP";
-    private Relation _targetRelation = Relation.FRIENDLY;
-    private int _targetCount = 1;
-    private DestinationType _destination = DestinationType.DISCARD;
-    public int ManaCost { get; set; }
-    public string CardText { get => _cardText; set => _cardText = value; }
-    public Relation TargetRelation { get => _targetRelation; set => _targetRelation = value; }
-    public int TargetCount { get => _targetCount; set => _targetCount = value; }
-    public DestinationType Destination { get => _destination; }
-
-    public void Play(Character[] targets)
+    private int manaCost = 1;
+    private string cardName = "Healing Potion";
+    private DestinationType destinationType = DestinationType.DISCARD;
+    private List<EffectBundle> effectBundles = new List<EffectBundle>()
     {
-        targets[0].Heal(_healingAmount);
-    }
+        new EffectBundle(new CauseableEffect[]{new Heal(10)}, 1, Relation.FRIENDLY)
+    };
+    public override int ManaCost { get => manaCost; set => manaCost = value; }
+    public override string CardName { get => cardName; set => cardName = value; }
+    public override DestinationType DestinationType { get => destinationType; set => destinationType = value; }
+
+    public override List<EffectBundle> EffectBundles => effectBundles;
 }

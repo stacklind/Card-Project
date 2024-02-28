@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthHandler: {fileID: 7757696473772841045}
-  relation: 1
+  relation: 2
 --- !u!114 &7757696473772841045
 MonoBehaviour:
   m_ObjectHideFlags: 0

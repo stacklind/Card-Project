@@ -46,6 +46,8 @@ public class Character : MonoBehaviour
 
 public enum Relation
 {
+    ANY,
     FRIENDLY,
-    UNFRIENDLY
+    UNFRIENDLY,
+    SELF
 }
