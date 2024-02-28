@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ITargetable
+public abstract class Effect
 {
-    public int TargetCount { get; set; }
+    public override abstract string ToString();
 }

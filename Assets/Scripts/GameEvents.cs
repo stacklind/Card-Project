@@ -50,6 +50,12 @@ public class GameEvents : MonoBehaviour
     public delegate void OnCharacterSpawned(Character character);
     public static event OnCharacterSpawned onCharacterSpawned;
 
+    public delegate void OnHandleEffects(EffectBundle effects);
+    public static event OnHandleEffects onHandleEffects;
+
+    public delegate void OnEffectsHandled();
+    public static event OnEffectsHandled onEffectsHandled;
+
     public delegate void OnTargetsRequired(TargetAquisition targetAquisition);
     public static event OnTargetsRequired onTargetsRequired;
 
@@ -141,6 +147,16 @@ public class GameEvents : MonoBehaviour
     public static void RaiseCharacterSpawned(Character character)
     {
         onCharacterSpawned?.Invoke(character);
+    }
+
+    public static void RaiseHandleEffects(EffectBundle effects)
+    {
+        onHandleEffects?.Invoke(effects);
+    }
+
+    public static void RaiseEffectsHandled()
+    {
+        onEffectsHandled?.Invoke();
     }
 
     public static void RaiseTargetsRequired(TargetAquisition targetAquisition)

@@ -2,22 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stab : ICard, ITargetable
+public class Stab : Card
 {
-    private int _damageAmount = 10;
-    private string _cardText = "Deal 10 damage";
-    private Relation _targetRelation = Relation.UNFRIENDLY;
-    private int _targetCount = 1;
-    private DestinationType _destination = DestinationType.DISCARD;
-
-    public int ManaCost { get; set; }
-    public string CardText { get => _cardText; }
-    public Relation TargetRelation { get => _targetRelation; }
-    public int TargetCount { get => _targetCount; }
-    public DestinationType Destination { get => _destination; }
-
-    public void Play(Character[] targets)
+    private int manaCost = 1;
+    private string cardName = "Stab";
+    private DestinationType destinationType = DestinationType.DISCARD;
+    private List<EffectBundle> effectBundles = new List<EffectBundle>()
     {
-        targets[0].Damage(_damageAmount);
-    }
+        new EffectBundle(new CauseableEffect[]{new Damage(10)}, 1, Relation.UNFRIENDLY)
+    };
+
+    public override int ManaCost { get => manaCost; set => manaCost = value; }
+    public override string CardName { get => cardName; set => cardName = value; }
+    public override DestinationType DestinationType { get => destinationType; set => destinationType = value; }
+    public override List<EffectBundle> EffectBundles => effectBundles;
 }

@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class BoardHandler : MonoBehaviour
 {
+    EffectHandler eh;
     private List<Character> enemies;
     private List<Character> allies;
 
     public void Awake()
     {
+        eh = new EffectHandler();
         enemies = new List<Character>();
         allies = new List<Character>();
+        
         GameEvents.onCharacterSpawned += AddCharacter;
         GameEvents.onCharacterRequestTargets += SendTargetsToCharacter;
     }

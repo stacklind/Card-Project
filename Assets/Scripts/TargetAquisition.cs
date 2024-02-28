@@ -22,7 +22,6 @@ public class TargetAquisition
         if(target.Relation == relationRequirement)
         {
             AddTarget(target);
-            GameEvents.RaiseTargetFound(targetsRemaining);
         }
         else
         {
@@ -33,8 +32,9 @@ public class TargetAquisition
     private void AddTarget(Character target)
     {
         targets[targetsRemaining-- - 1] = target;
+        GameEvents.RaiseTargetFound(targetsRemaining);
 
-        if(targetsRemaining == 0)
+        if (targetsRemaining == 0)
         {
             GameEvents.RaiseTargetingComplete(targets);
             ClearEventListeners();
