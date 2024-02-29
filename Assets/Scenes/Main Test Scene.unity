@@ -136,12 +136,12 @@ GameObject:
   - component: {fileID: 361385061}
   - component: {fileID: 361385060}
   m_Layer: 5
-  m_Name: Test2
+  m_Name: End Turn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &361385059
 RectTransform:
   m_ObjectHideFlags: 0
@@ -206,9 +206,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1623112068}
-        m_TargetAssemblyTypeName: BoardHandler, Assembly-CSharp
-        m_MethodName: TempEnemyTurn
+      - m_Target: {fileID: 381220921}
+        m_TargetAssemblyTypeName: GUI, Assembly-CSharp
+        m_MethodName: EndPlayerTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -372,9 +372,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 751618a72eabe344b96a9e4aec0a2c80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetingGUI: {fileID: 1034515170}
+  targetingGUI: {fileID: 0}
   errorMessageTextComponent: {fileID: 1339437055}
   displayCardAnchor: {fileID: 1494275665}
+  endTurnButton: {fileID: 0}
 --- !u!1 &428099072
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,7 +769,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enemy Turn
+  m_text: End Turn
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1577,12 +1578,12 @@ GameObject:
   - component: {fileID: 1473172110}
   - component: {fileID: 1473172109}
   m_Layer: 5
-  m_Name: Test
+  m_Name: Draw Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1473172108
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1799,7 +1800,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1623112069}
-  - component: {fileID: 1623112068}
   m_Layer: 0
   m_Name: BoardHandler
   m_TagString: Untagged
@@ -1807,18 +1807,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1623112068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1623112067}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 102835e9ee1e28245865a3bdd80e0a35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1623112069
 Transform:
   m_ObjectHideFlags: 0

@@ -11,6 +11,15 @@ public class GameEvents : MonoBehaviour
     public delegate void OnLoadPlayer();
     public static event OnLoadPlayer onLoadPlayer;
 
+    public delegate void OnBeginNextTurn(Relation side);
+    public static event OnBeginNextTurn onBeginNextTurn;
+
+    public delegate void OnTogglePlayerTurn(bool playerTurn);
+    public static event OnTogglePlayerTurn onTogglePlayerTurn;
+
+    public delegate void OnCharacterDoneWithTurn();
+    public static event OnCharacterDoneWithTurn onCharacterDoneWithTurn;
+
     public delegate void OnRequestCardCreation(int cardID, IDestination destionation);
     public static event OnRequestCardCreation onRequestCardCreation;
 
@@ -82,6 +91,21 @@ public class GameEvents : MonoBehaviour
     public static void RaiseLoadPlayer()
     {
         onLoadPlayer?.Invoke();
+    }
+
+    public static void RaiseBeginNextTurn(Relation side)
+    {
+        onBeginNextTurn?.Invoke(side);
+    }
+
+    public static void RaiseTogglePlayerTurn(bool playerTurn)
+    {
+        onTogglePlayerTurn?.Invoke(playerTurn);
+    }
+
+    public static void RaiseCharacterDoneWithTurn()
+    {
+        onCharacterDoneWithTurn?.Invoke();
     }
 
     public static void RaiseRequestCardCreation(int cardID, IDestination destination)
