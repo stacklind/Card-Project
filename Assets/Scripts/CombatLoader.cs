@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class CombatLoader : MonoBehaviour
 {
+    BoardHandler bh;
     private void Awake()
     {
+        bh = new BoardHandler();
         Database.Init();
     }
 
@@ -14,5 +16,6 @@ public class CombatLoader : MonoBehaviour
         GameEvents.RaiseLoadPlayer();
         GameEvents.RaiseRequestCharacterCreation(0);
         GameEvents.RaiseGameStarted();
+        GameEvents.RaiseBeginNextTurn(Relation.FRIENDLY);
     }
 }

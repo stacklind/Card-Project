@@ -92,11 +92,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7757696473772841043}
   - component: {fileID: 7757696473772841044}
-  - component: {fileID: 8695189320733634393}
+  - component: {fileID: 3085490033510236483}
   - component: {fileID: 7757696473772841045}
   - component: {fileID: 7757696473772841042}
   m_Layer: 7
-  m_Name: CharacterPrefab
+  m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,7 +168,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8695189320733634393
+--- !u!114 &3085490033510236483
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,11 +177,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7757696473772841046}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57041f9091e9e23428a1bcf6b43e0d7f, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ba1d2f832138a049a5742de727f86bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthHandler: {fileID: 7757696473772841045}
-  relation: 2
+  relation: 1
 --- !u!114 &7757696473772841045
 MonoBehaviour:
   m_ObjectHideFlags: 0

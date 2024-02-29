@@ -34,7 +34,7 @@ public class CardInstance : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!cardIsBeingPlayed)
+        if (location.GetType() == typeof(Hand) && ((Hand)location).IsPlayerTurn && !cardIsBeingPlayed)
         {
             offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
         }
@@ -42,7 +42,7 @@ public class CardInstance : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        if (!cardIsBeingPlayed)
+        if (location.GetType() == typeof(Hand) && ((Hand)location).IsPlayerTurn && !cardIsBeingPlayed)
         {
             Vector3 currentScreenPoint = Input.mousePosition;
             Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + offset;
@@ -61,7 +61,7 @@ public class CardInstance : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!cardIsBeingPlayed)
+        if (location.GetType() == typeof(Hand) && ((Hand)location).IsPlayerTurn && !cardIsBeingPlayed)
         {
             if (!inHand)
             {

@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class GUI : MonoBehaviour
 {
-    [SerializeField] private TargetingGUI targetingGUI;
+    [SerializeField] private GameObject targetingGUI;
     [SerializeField] private TMP_Text errorMessageTextComponent;
     [SerializeField] private Transform displayCardAnchor;
+    [SerializeField] private GameObject endTurnButton;
 
     private void Awake()
     {
@@ -16,30 +17,41 @@ public class GUI : MonoBehaviour
         GameEvents.onTargetsRequired += DisplayTargetingGUI;
         GameEvents.onTargetingComplete += HideTargetingGUI;
         GameEvents.onCardPlayed += DisplayCard;
+        GameEvents.onTogglePlayerTurn += TogglePlayerEndTurnButton;
     }
 
-    public void DisplayCard(CardInstance card)
+    private void DisplayCard(CardInstance card)
     {
         card.transform.position = displayCardAnchor.position;
     }
 
-    public void DisplayTargetingGUI(TargetAquisition targetAquisition)
+    private void DisplayTargetingGUI(TargetAquisition targetAquisition)
     {
-        targetingGUI.gameObject.SetActive(true);
+        targetingGUI.SetActive(true);
     }
 
     public void HideTargetingGUI()
     {
         GameEvents.RaiseTargetingCanceled();
-        targetingGUI.gameObject.SetActive(false);
+        targetingGUI.SetActive(false);
     }
 
-    public void HideTargetingGUI(Character[] targets)
+    private void HideTargetingGUI(Character[] targets)
     {
-        targetingGUI.gameObject.SetActive(false);
+        targetingGUI.SetActive(false);
     }
 
-    public void DisplayError(string errorText, float errorDisplayTime)
+    private void TogglePlayerEndTurnButton(bool isPlayerTurn)
+    {
+        endTurnButton.SetActive(isPlayerTurn);
+    }
+
+    public void EndPlayerTurn()
+    {
+        GameEvents.RaiseTogglePlayerTurn(false);
+    }
+
+    private void DisplayError(string errorText, float errorDisplayTime)
     {
         StartCoroutine(DisplayErrorCoroutine(errorText, errorDisplayTime));
     }

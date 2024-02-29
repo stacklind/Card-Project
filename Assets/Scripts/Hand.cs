@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class Hand : MonoBehaviour, IDestination
 {
     private float CARD_POS_INCRIMENT = 2.2f;
     private int HAND_MAX_SIZE = 7;
-
+    private bool isPlayerTurn = false;
     private List<CardInstance> hand = new List<CardInstance>();
+
+    public bool IsPlayerTurn { get => isPlayerTurn; }
 
     private void Awake()
     {
         GameEvents.onMoveCardToHand += AddCard;
+        GameEvents.onTogglePlayerTurn += SetIsPlayerTurn;
+    }
+
+    private void SetIsPlayerTurn(bool isPlayerTurn)
+    {
+        this.isPlayerTurn = isPlayerTurn;
     }
 
     public void AddCard(CardInstance card)

@@ -8,6 +8,7 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private Transform charactersRoot;
     [SerializeField] private Transform characterSpawnPoint;
     [SerializeField] private GameObject characterPrefab;
+    [SerializeField] private GameObject playerPrefab;
 
     private void Awake()
     {
@@ -29,7 +30,7 @@ public class ObjectSpawner : MonoBehaviour
     {
         GameObject characterObject = Instantiate(characterPrefab, charactersRoot);
         characterObject.transform.position = characterSpawnPoint.position;
-        Character character = characterObject.GetComponent<Character>();
+        NPC character = characterObject.GetComponent<NPC>();
         Behaviour behaviour = Database.GetBehaviourByID(characterID);
         character.Init(behaviour);
         GameEvents.RaiseCharacterSpawned(character);
@@ -37,11 +38,10 @@ public class ObjectSpawner : MonoBehaviour
 
     private void CreatePlayerCharacter()
     {
-        GameObject playerCharacterObject = Instantiate(characterPrefab, charactersRoot);
+        GameObject playerCharacterObject = Instantiate(playerPrefab, charactersRoot);
         playerCharacterObject.name = "Player";
         playerCharacterObject.transform.position = -characterSpawnPoint.position;
-        Character playerCharacter = playerCharacterObject.GetComponent<Character>();
-        playerCharacter.Relation = Relation.FRIENDLY;
+        NPC playerCharacter = playerCharacterObject.GetComponent<NPC>();
         GameEvents.RaiseCharacterSpawned(playerCharacter);
     }
 }

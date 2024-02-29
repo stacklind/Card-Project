@@ -6,12 +6,12 @@ using UnityEngine;
 public abstract class Behaviour
 {
     protected List<Ability> abilities;
-    protected Character character;
+    protected NPC character;
     protected State state;
 
     public void Init(Character character)
     {
-        this.character = character;
+        this.character = (NPC) character;
         abilities = new List<Ability>();
         AddAbilities();
         state = State.OFFENSIVE;
