@@ -41,7 +41,7 @@ public class ObjectSpawner : MonoBehaviour
         GameObject playerCharacterObject = Instantiate(playerPrefab, charactersRoot);
         playerCharacterObject.name = "Player";
         playerCharacterObject.transform.position = -characterSpawnPoint.position;
-        NPC playerCharacter = playerCharacterObject.GetComponent<NPC>();
+        PC playerCharacter = playerCharacterObject.GetComponent<PC>();
         GameEvents.RaiseCharacterSpawned(playerCharacter);
     }
 }
