@@ -372,10 +372,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 751618a72eabe344b96a9e4aec0a2c80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetingGUI: {fileID: 0}
+  targetingGUI: {fileID: 1034515168}
   errorMessageTextComponent: {fileID: 1339437055}
   displayCardAnchor: {fileID: 1494275665}
-  endTurnButton: {fileID: 0}
+  endTurnButton: {fileID: 361385058}
 --- !u!1 &428099072
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,6 +1030,7 @@ MonoBehaviour:
   charactersRoot: {fileID: 1589734816}
   characterSpawnPoint: {fileID: 519162949}
   characterPrefab: {fileID: 7757696473772841046, guid: 043618356359f624b9d39cdbed3ffc96, type: 3}
+  playerPrefab: {fileID: 7757696473772841046, guid: 0875cf0f69bc3064e9355f745532ecd2, type: 3}
 --- !u!1 &1339437053
 GameObject:
   m_ObjectHideFlags: 0
