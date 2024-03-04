@@ -13,10 +13,20 @@ public abstract class Character : MonoBehaviour
     {
         GameEvents.RaiseCharacterClicked(this);
     }
-    
+
+    private void Die()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void Damage(int damage)
     {
         healthHandler.CurrentHealth -= damage;
+        if(healthHandler.CurrentHealth == 0)
+        {
+            GameEvents.RaiseCharacterDied(this);
+            Die();
+        }
     }
 
     public void Heal(int amount)
@@ -25,6 +35,10 @@ public abstract class Character : MonoBehaviour
     }
 
     public abstract void TakeTurn();
+    public virtual void EndTurn()
+    {
+        GameEvents.RaiseCharacterDoneWithTurn();
+    }
 }
 
 public enum Relation

@@ -22,6 +22,6 @@ public class NPC : Character
     public override void TakeTurn()
     {
         behaviour.UseAbility();
-        GameEvents.RaiseCharacterDoneWithTurn();
+        EndTurn();
     }
 }

@@ -43,6 +43,7 @@ public class EffectBundle
 
     private void EffectsDone()
     {
+        GameEvents.onTargetingCanceled -= EffectsDone;
         GameEvents.RaiseEffectsHandled();
     }
 

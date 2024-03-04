@@ -15,13 +15,28 @@ public class Hand : MonoBehaviour, IDestination
 
     private void Awake()
     {
-        GameEvents.onMoveCardToHand += AddCard;
-        GameEvents.onTogglePlayerTurn += SetIsPlayerTurn;
+        RegisterEvents();
     }
 
-    private void SetIsPlayerTurn(bool isPlayerTurn)
+    private void RegisterEvents()
     {
-        this.isPlayerTurn = isPlayerTurn;
+        GameEvents.onMoveCardToHand += AddCard;
+        GameEvents.onPlayerStartTurn += ToggleIsPlayerTurn;
+        GameEvents.onPlayerEndTurn += ToggleIsPlayerTurn;
+        GameEvents.onGameEnd += UnregisterEvents;
+    }
+
+    private void UnregisterEvents()
+    {
+        GameEvents.onMoveCardToHand -= AddCard;
+        GameEvents.onPlayerStartTurn -= ToggleIsPlayerTurn;
+        GameEvents.onPlayerEndTurn -= ToggleIsPlayerTurn;
+        GameEvents.onGameEnd -= UnregisterEvents;
+    }
+
+    private void ToggleIsPlayerTurn()
+    {
+        isPlayerTurn = !isPlayerTurn;
     }
 
     public void AddCard(CardInstance card)

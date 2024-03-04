@@ -8,8 +8,21 @@ public class DiscardPile : MonoBehaviour, IDestination
 
     private void Awake()
     {
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         GameEvents.onDeckEmpty += ShuffleDiscardPileIntoDeck;
         GameEvents.onMoveCardToDiscardPile += AddCard;
+        GameEvents.onGameEnd += UnregisterEvents;
+    }
+
+    private void UnregisterEvents()
+    {
+        GameEvents.onDeckEmpty -= ShuffleDiscardPileIntoDeck;
+        GameEvents.onMoveCardToDiscardPile -= AddCard;
+        GameEvents.onGameEnd -= UnregisterEvents;
     }
 
     public void AddCard(CardInstance card)

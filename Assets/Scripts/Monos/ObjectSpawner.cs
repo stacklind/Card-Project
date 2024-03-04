@@ -12,9 +12,23 @@ public class ObjectSpawner : MonoBehaviour
 
     private void Awake()
     {
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         GameEvents.onLoadPlayer += CreatePlayerCharacter;
         GameEvents.onRequestCardCreation += CreateCard;
         GameEvents.onRequestCharacterCreation += CreateCharacter;
+        GameEvents.onGameEnd += UnregisterEvents;
+    }
+
+    private void UnregisterEvents()
+    {
+        GameEvents.onLoadPlayer -= CreatePlayerCharacter;
+        GameEvents.onRequestCardCreation -= CreateCard;
+        GameEvents.onRequestCharacterCreation -= CreateCharacter;
+        GameEvents.onGameEnd -= UnregisterEvents;
     }
 
     private void CreateCard(int cardID, IDestination destination)

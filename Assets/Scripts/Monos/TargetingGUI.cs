@@ -9,7 +9,19 @@ public class TargetingGUI : MonoBehaviour
 
     private void Awake()
     {
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         GameEvents.onTargetFound += UpdateTargetingText;
+        GameEvents.onGameEnd += UnregisterEvents;
+    }
+
+    private void UnregisterEvents()
+    {
+        GameEvents.onTargetFound -= UpdateTargetingText;
+        GameEvents.onGameEnd -= UnregisterEvents;
     }
 
     public void UpdateTargetingText(int targetsRemaining)

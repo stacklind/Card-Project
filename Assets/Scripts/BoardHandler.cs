@@ -7,7 +7,7 @@ public class BoardHandler
 {
     EffectHandler eh;
     private Dictionary<Relation, List<Character>> characters;
-    
+    private List<Character> deadCharacters;
     private Relation currentSide;
     private int currentCharacter;
 
@@ -15,47 +15,71 @@ public class BoardHandler
     {
         eh = new EffectHandler();
         characters = new Dictionary<Relation, List<Character>> ();
+        deadCharacters = new List<Character> ();
         List<Character> allies = new List<Character>();
         List<Character> enemies = new List<Character>();
         
         characters.Add(Relation.FRIENDLY, allies);
         characters.Add(Relation.UNFRIENDLY, enemies);
         
+        RegisterEvents();
+    }
+
+
+    private void RegisterEvents()
+    {
         GameEvents.onCharacterSpawned += AddCharacter;
         GameEvents.onCharacterRequestTargets += SendTargetsToCharacter;
         GameEvents.onBeginNextTurn += StartNewTurn;
         GameEvents.onCharacterDoneWithTurn += CharacterTakeTurn;
+        GameEvents.onCharacterDied += RemoveCharacter;
+        GameEvents.onGameEnd += UnRegisterEvents;
+    }
+
+    private void UnRegisterEvents()
+    {
+        GameEvents.onCharacterSpawned -= AddCharacter;
+        GameEvents.onCharacterRequestTargets -= SendTargetsToCharacter;
+        GameEvents.onBeginNextTurn -= StartNewTurn;
+        GameEvents.onCharacterDoneWithTurn -= CharacterTakeTurn;
+        GameEvents.onCharacterDied -= RemoveCharacter;
+        GameEvents.onGameEnd -= UnRegisterEvents;
     }
 
     private void AddCharacter(Character character)
     {
         characters[character.Relation].Add(character);
-        Debug.Log("Added chararacter to " + character.Relation + " new size is " + characters[character.Relation].Count);
     }
 
     private void RemoveCharacter(Character character)
     {
         characters[character.Relation].Remove(character);
+        
+        deadCharacters.Add(character);
     }
 
     private void StartNewTurn(Relation side)
     {
-        Debug.Log("New turn: " + side);
-        currentSide = side;
-        currentCharacter = 0;
-        CharacterTakeTurn();
+        if (characters[side].Count == 0)
+        {
+            GameEvents.RaiseGameEnded();
+        }
+        else
+        {
+            currentSide = side;
+            currentCharacter = 0;
+            CharacterTakeTurn();
+        }
     }
 
     private void CharacterTakeTurn()
     {
-        Debug.Log("Character nr " + currentCharacter + " should take its turn");
         if (characters[currentSide].Count > currentCharacter)
         {
             characters[currentSide][currentCharacter++].TakeTurn();
         }
         else
         {
-            Debug.Log("There arent anymore characters on this side (" + characters[currentSide].Count + ") swap sides");
             GameEvents.RaiseBeginNextTurn(currentSide == Relation.FRIENDLY ? Relation.UNFRIENDLY : Relation.FRIENDLY);
         }
     }
@@ -68,7 +92,7 @@ public class BoardHandler
         }
         else
         {
-            
+
             return characters[Relation.FRIENDLY].ToArray();
         }
     }

@@ -11,8 +11,21 @@ public class EffectHandler
     {
         effectBundles = new List<EffectBundle>();
         isHandlingEffects = false;
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         GameEvents.onHandleEffects += QueueEffectHandling;
         GameEvents.onEffectsHandled += HandleNext;
+        GameEvents.onGameEnd += UnregisterEvents;
+    }
+
+    private void UnregisterEvents()
+    {
+        GameEvents.onHandleEffects -= QueueEffectHandling;
+        GameEvents.onEffectsHandled -= HandleNext;
+        GameEvents.onGameEnd -= UnregisterEvents;
     }
 
     public void QueueEffectHandling(EffectBundle effects)
