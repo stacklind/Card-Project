@@ -8,14 +8,20 @@ public class GameEvents : MonoBehaviour
     public delegate void OnGameStart();
     public static event OnGameStart onGameStart;
 
+    public delegate void OnGameEnd();
+    public static event OnGameEnd onGameEnd;
+
     public delegate void OnLoadPlayer();
     public static event OnLoadPlayer onLoadPlayer;
 
     public delegate void OnBeginNextTurn(Relation side);
     public static event OnBeginNextTurn onBeginNextTurn;
 
-    public delegate void OnTogglePlayerTurn(bool playerTurn);
-    public static event OnTogglePlayerTurn onTogglePlayerTurn;
+    public delegate void OnPlayerStartTurn();
+    public static event OnPlayerStartTurn onPlayerStartTurn;
+
+    public delegate void OnPlayerEndTurn();
+    public static event OnPlayerEndTurn onPlayerEndTurn;
 
     public delegate void OnCharacterDoneWithTurn();
     public static event OnCharacterDoneWithTurn onCharacterDoneWithTurn;
@@ -56,6 +62,9 @@ public class GameEvents : MonoBehaviour
     public delegate void OnDamageTaken(Character target, int damage);
     public static event OnDamageTaken onDamageTaken;
 
+    public delegate void OnCharacterDied(Character character);
+    public static event OnCharacterDied onCharacterDied;
+
     public delegate void OnCharacterSpawned(Character character);
     public static event OnCharacterSpawned onCharacterSpawned;
 
@@ -88,6 +97,11 @@ public class GameEvents : MonoBehaviour
         onGameStart?.Invoke();
     }
 
+    public static void RaiseGameEnded()
+    {
+        onGameEnd?.Invoke();
+    }
+
     public static void RaiseLoadPlayer()
     {
         onLoadPlayer?.Invoke();
@@ -98,9 +112,14 @@ public class GameEvents : MonoBehaviour
         onBeginNextTurn?.Invoke(side);
     }
 
-    public static void RaiseTogglePlayerTurn(bool playerTurn)
+    public static void RaisePlayerStartTurn()
     {
-        onTogglePlayerTurn?.Invoke(playerTurn);
+        onPlayerStartTurn?.Invoke();
+    }
+
+    public static void RaisePlayerEndTurn()
+    {
+        onPlayerEndTurn?.Invoke();
     }
 
     public static void RaiseCharacterDoneWithTurn()
@@ -168,6 +187,11 @@ public class GameEvents : MonoBehaviour
         onDamageTaken?.Invoke(target, damage);
     }
 
+    public static void RaiseCharacterDied(Character character)
+    {
+        onCharacterDied?.Invoke(character);
+    }
+
     public static void RaiseCharacterSpawned(Character character)
     {
         onCharacterSpawned?.Invoke(character);
@@ -212,4 +236,6 @@ public class GameEvents : MonoBehaviour
     {
         return onCharacterRequestTargets?.Invoke(character);
     }
+
+    
 }

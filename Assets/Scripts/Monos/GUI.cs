@@ -13,11 +13,27 @@ public class GUI : MonoBehaviour
 
     private void Awake()
     {
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         ErrorHandler.displayErrorMessage += DisplayError;
         GameEvents.onTargetsRequired += DisplayTargetingGUI;
         GameEvents.onTargetingComplete += HideTargetingGUI;
         GameEvents.onCardPlayed += DisplayCard;
-        GameEvents.onTogglePlayerTurn += TogglePlayerEndTurnButton;
+        GameEvents.onPlayerStartTurn += ShowPlayerEndTurnButton;
+        GameEvents.onGameEnd += UnregisterEvents;
+    }
+
+    private void UnregisterEvents()
+    {
+        ErrorHandler.displayErrorMessage -= DisplayError;
+        GameEvents.onTargetsRequired -= DisplayTargetingGUI;
+        GameEvents.onTargetingComplete -= HideTargetingGUI;
+        GameEvents.onCardPlayed -= DisplayCard;
+        GameEvents.onPlayerStartTurn -= ShowPlayerEndTurnButton;
+        GameEvents.onGameEnd -= UnregisterEvents;
     }
 
     private void DisplayCard(CardInstance card)
@@ -41,14 +57,15 @@ public class GUI : MonoBehaviour
         targetingGUI.SetActive(false);
     }
 
-    private void TogglePlayerEndTurnButton(bool isPlayerTurn)
+    private void ShowPlayerEndTurnButton()
     {
-        endTurnButton.SetActive(isPlayerTurn);
+        endTurnButton.SetActive(true);
     }
 
     public void EndPlayerTurn()
     {
-        GameEvents.RaiseTogglePlayerTurn(false);
+        endTurnButton.SetActive(false);
+        GameEvents.RaisePlayerEndTurn();
     }
 
     private void DisplayError(string errorText, float errorDisplayTime)

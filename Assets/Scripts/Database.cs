@@ -23,7 +23,7 @@ public class Database
 
         behaviours = new List<Behaviour>
         {
-            new Wolf()                      // ID 0
+            new BWolf()                      // ID 0
         };
     }
 

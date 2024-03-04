@@ -18,7 +18,11 @@ public class HealthHandler : MonoBehaviour
         set
         {
             currentHealth = value > maxHealth ? maxHealth : value;
-            healthBar.HealthChanged(value);
+            if(currentHealth < 0)
+            {
+                currentHealth = 0;
+            }
+            healthBar.HealthChanged(currentHealth);
         }
 
         get
@@ -37,7 +41,7 @@ public class HealthHandler : MonoBehaviour
             {
                 currentHealth = maxHealth;
             }
-            healthBar.MaxHealthChanged(value);
+            healthBar.MaxHealthChanged(CurrentHealth);
         }
 
         get

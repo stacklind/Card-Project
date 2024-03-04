@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wolf : Behaviour
+public class BWolf : Behaviour
 {
     public override void UseAbility()
     {

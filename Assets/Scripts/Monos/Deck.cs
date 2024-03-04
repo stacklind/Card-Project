@@ -11,9 +11,23 @@ public class Deck : MonoBehaviour, IDestination
     private void Awake()
     {
         cards = new List<CardInstance>();
+        RegisterEvents();
+    }
+    
+    private void RegisterEvents()
+    {
         GameEvents.onMoveCardToDeck += AddCard;
         GameEvents.onDrawCard += DrawCard;
         GameEvents.onGameStart += PrepareStartingCards;
+        GameEvents.onGameEnd += UnregisterEvents;
+    }
+
+    private void UnregisterEvents()
+    {
+        GameEvents.onMoveCardToDeck -= AddCard;
+        GameEvents.onDrawCard -= DrawCard;
+        GameEvents.onGameStart -= PrepareStartingCards;
+        GameEvents.onGameEnd -= UnregisterEvents;
     }
 
     private void PrepareStartingCards()

@@ -13,8 +13,21 @@ public class TargetAquisition
         targetsRemaining = numberOfTargets;
         targets = new Character[targetsRemaining];
         relationRequirement = relation;
+        RegisterEvents();
+    }
+    
+    private void RegisterEvents()
+    {
         GameEvents.onCharacterClicked += IsValidTarget;
         GameEvents.onTargetingCanceled += Cancel;
+        GameEvents.onGameEnd += UnregisterEvents;
+    }
+
+    private void UnregisterEvents()
+    {
+        GameEvents.onCharacterClicked -= IsValidTarget;
+        GameEvents.onTargetingCanceled -= Cancel;
+        GameEvents.onGameEnd -= UnregisterEvents;
     }
 
     public void IsValidTarget(Character target)
@@ -37,7 +50,7 @@ public class TargetAquisition
         if (targetsRemaining == 0)
         {
             GameEvents.RaiseTargetingComplete(targets);
-            ClearEventListeners();
+            UnregisterEvents();
         }
     }
 
@@ -50,12 +63,6 @@ public class TargetAquisition
     {
         targets = new Character[0];
         targetsRemaining = 0;
-        ClearEventListeners();
-    }
-
-    private void ClearEventListeners()
-    {
-        GameEvents.onCharacterClicked -= IsValidTarget;
-        GameEvents.onTargetingCanceled -= Cancel;
+        UnregisterEvents();
     }
 }

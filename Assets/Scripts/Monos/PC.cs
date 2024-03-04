@@ -8,7 +8,19 @@ public class PC : Character
 
     private void Awake()
     {
-        GameEvents.onTogglePlayerTurn += EndTurn;
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
+        GameEvents.onPlayerEndTurn += EndTurn;
+        GameEvents.onGameEnd += UnregisterEvents;
+    }
+
+    private void UnregisterEvents()
+    {
+        GameEvents.onPlayerEndTurn -= EndTurn;
+        GameEvents.onGameEnd -= UnregisterEvents;
     }
 
     public override void TakeTurn()
@@ -23,14 +35,6 @@ public class PC : Character
             isFirstTurn = false;
         }
         
-        GameEvents.RaiseTogglePlayerTurn(true);
-    }
-
-    private void EndTurn(bool isStartOfTurn)
-    {
-        if (!isStartOfTurn)
-        {
-            GameEvents.RaiseCharacterDoneWithTurn();
-        }
+        GameEvents.RaisePlayerStartTurn();
     }
 }
