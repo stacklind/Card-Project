@@ -12,13 +12,13 @@ public class Database
     {
         cards = new List<Card>
         {
-            new Stab(),                     // ID 0
-            new HealingPotion()             // ID 1
+            new CStab(),                     // ID 0
+            new CHealingPotion()             // ID 1
         };
 
         abilities = new List<Ability>
         {
-            new WolfBite()                  // ID 0
+            new AWolfBite()                  // ID 0
         };
 
         behaviours = new List<Behaviour>

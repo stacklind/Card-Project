@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heal : CauseableEffect
+public class EHeal : CauseableEffect
 {
     private int healAmount;
 
-    public Heal(int healAmount)
+    public EHeal(int healAmount)
     {
         this.healAmount = healAmount;
     }

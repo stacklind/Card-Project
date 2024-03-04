@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class WolfBite : Ability
+public class AWolfBite : Ability
 {
     private int damage = 10;
 

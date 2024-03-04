@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Damage : CauseableEffect
+public class EDamage : CauseableEffect
 {
     private int damage;
 
-    public Damage(int damage)
+    public EDamage(int damage)
     {
         this.damage = damage;
     }
